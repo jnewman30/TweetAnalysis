@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Configuration.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -14,18 +15,18 @@ namespace TweetApiTest
         private ILogger<TweetServiceHost> Logger { get; }
         private IHostApplicationLifetime AppLifetime { get; }
         private IServiceProvider Services { get; }
-        private ISystemConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         private Timer _timer;
 
-        private int StreamIntervalSeconds => Configuration.GetConfigurationValue<int>(
-            "TwitterApi", "StreamIntervalSeconds", 30);
+        private int StreamIntervalSeconds => Configuration.GetValue<int>(
+            "TwitterApi:StreamIntervalSeconds", 30);
 
         public TweetServiceHost(
             ILogger<TweetServiceHost> logger,
             IHostApplicationLifetime appLifetime,
             IServiceProvider services,
-            ISystemConfiguration configuration)
+            IConfiguration configuration)
         {
             Logger = logger;
             AppLifetime = appLifetime;

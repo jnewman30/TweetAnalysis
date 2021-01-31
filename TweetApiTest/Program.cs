@@ -23,7 +23,6 @@ namespace TweetApiTest
                 {
                     services
                         .AddTransient<IPathFinder, PathFinder>()
-                        .AddTransient<ISystemConfiguration, SystemConfiguration>()
                         .AddTransient<ITweetProcessingService, TweetProcessingService>()
                         .AddHostedService<TweetServiceHost>();
                 })

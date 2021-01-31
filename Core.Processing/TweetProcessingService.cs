@@ -2,6 +2,7 @@
 using System.Net;
 using Core.Configuration.Interfaces;
 using Core.Processing.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Core.Processing
@@ -9,20 +10,20 @@ namespace Core.Processing
     public class TweetProcessingService : ITweetProcessingService
     {
         private ILogger<TweetProcessingService> Logger { get; }
-        private ISystemConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
-        private string ApiKey => Configuration.GetConfigurationValue<string>(
-            "TwitterApi", "ApiKey", null);
+        private string ApiKey => Configuration.GetValue<string>(
+            "TwitterApi:ApiKey", null);
 
-        private string BearerToken => Configuration.GetConfigurationValue<string>(
-            "TwitterApi", "BearerToken", null);
+        private string BearerToken => Configuration.GetValue<string>(
+            "TwitterApi:BearerToken", null);
 
-        private string ApiUrl => Configuration.GetConfigurationValue<string>(
-            "TwitterApi", "ApiUrl", null);
+        private string ApiUrl => Configuration.GetValue<string>(
+            "TwitterApi:ApiUrl", null);
 
         public TweetProcessingService(
             ILogger<TweetProcessingService> logger,
-            ISystemConfiguration configuration)
+            IConfiguration configuration)
         {
             Logger = logger;
             Configuration = configuration;
