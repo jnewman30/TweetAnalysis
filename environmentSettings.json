@@ -1,0 +1,17 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+  
+  "TwitterApi": {
+    "ApiKey": "BvdkCAQkn4yRegwZ8msnisyRq",
+    "BearerToken": "AAAAAAAAAAAAAAAAAAAAAKUZMQEAAAAAN8SRkf4Pd%2Fjffgsvql4pJnu%2BbVs%3DutB9IeRcIYifSWcQWoYvF7L456ZKYJNr94xRC5iTLxXasg9b8U",
+    "ApiUrl": "https://api.twitter.com/2/tweets/sample/stream",
+    "StreamIntervalSeconds": 60 
+  }
+}
