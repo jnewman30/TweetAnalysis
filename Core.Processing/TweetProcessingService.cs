@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Data.Interfaces;
 using Core.Processing.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Tweetinvi;
-using Tweetinvi.Core.Models;
-using Tweetinvi.Models.V2;
-using Tweetinvi.Parameters.V2;
 
 namespace Core.Processing
 {
@@ -19,6 +14,7 @@ namespace Core.Processing
     {
         private ILogger<TweetProcessingService> Logger { get; }
         private IConfiguration Configuration { get; }
+        private ITweetRepository TweetRepository { get; }
 
         private string ApiKey => Configuration.GetValue<string>(
             "TwitterApi:ApiKey", null);
@@ -29,17 +25,14 @@ namespace Core.Processing
         private string BearerToken => Configuration.GetValue<string>(
             "TwitterApi:BearerToken", null);
 
-        public Subject<TweetV2> Tweets { get; }
-
-        private List<IDisposable> _subs = new List<IDisposable>();
-
         public TweetProcessingService(
             ILogger<TweetProcessingService> logger,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ITweetRepository tweetRepository)
         {
             Logger = logger;
             Configuration = configuration;
-            Tweets = new Subject<TweetV2>();
+            TweetRepository = tweetRepository;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -72,40 +65,21 @@ namespace Core.Processing
                 var client = new TwitterClient(ApiKey, ApiSecret, BearerToken);
                 client.Config.TweetMode = TweetMode.Compat;
 
-                _subs.Add(
-                    Tweets
-                        .LongCount().Subscribe(count => { Logger.LogDebug($"{count} tweets received"); }));
-
                 var sampleStream = client.StreamsV2.CreateSampleStream();
                 sampleStream.TweetReceived += (sender, args) =>
                 {
-                    var tweet = args.Tweet;
-                    Logger.LogDebug(args.Json);
-                    Tweets.OnNext(tweet);
+                    TweetRepository.Add(new Data.Tweet
+                    {
+                        Json = args.Json
+                    });
                 };
+
                 await sampleStream.StartAsync();
             }
             catch (Exception e)
             {
                 Logger.LogError(e, "Error downloading tweet stream.");
             }
-        }
-
-        public override void Dispose()
-        {
-            try
-            {
-                foreach (var sub in _subs)
-                {
-                    sub.Dispose();
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.LogError(e, "Error disposing of Rx Subscriptions");
-            }
-            
-            base.Dispose();
         }
     }
 }
