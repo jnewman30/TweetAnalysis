@@ -1,7 +1,9 @@
-﻿namespace Core.Processing.Interfaces
+﻿using System.Threading;
+
+namespace Core.Processing.Interfaces
 {
     public interface ITweetProcessingService
     {
-        void ProcessTweetStream();
+        void ProcessTweetStream(CancellationToken stoppingToken);
     }
 }

@@ -1,7 +1,7 @@
 {
   "Logging": {
     "LogLevel": {
-      "Default": "Information",
+      "Default": "Debug",
       "Microsoft": "Warning",
       "Microsoft.Hosting.Lifetime": "Information"
     }
@@ -9,9 +9,9 @@
   "AllowedHosts": "*",
   
   "TwitterApi": {
-    "ApiKey": "BvdkCAQkn4yRegwZ8msnisyRq",
-    "BearerToken": "AAAAAAAAAAAAAAAAAAAAAKUZMQEAAAAAN8SRkf4Pd%2Fjffgsvql4pJnu%2BbVs%3DutB9IeRcIYifSWcQWoYvF7L456ZKYJNr94xRC5iTLxXasg9b8U",
-    "ApiUrl": "https://api.twitter.com/2/tweets/sample/stream",
-    "StreamIntervalSeconds": 60 
+    "ApiKey": "nbebrWF4ZMRgwi4nLVezP6E7p",
+    "ApiSecret": "ASayl2FQM8yyV1IlXHgK4kDfbSuflxzhGPjkiZFKax0qxfbbVq",
+    "BearerToken": "AAAAAAAAAAAAAAAAAAAAAKUZMQEAAAAAUuTOTPXvAmUbPcNgz9qm7OBpU8g%3D72CU0336FikPFKG97uJOOBaQoS2tSEXiJSX03HX4vsOkhZnkhI",
+    "StreamIntervalSeconds": 10
   }
 }

@@ -1,21 +1,19 @@
 # Tweet Analyzer
-
+> _All application settings are in **environmentSettings.json** in the **Solution Items** folder._
 
 ## Twitter API Info
+> #### API key 
+> nbebrWF4ZMRgwi4nLVezP6E7p
 
-#### (TestApp) Test-App-a5c2cdbefefa4e199a587ec
+> #### API Secret key 
+> ASayl2FQM8yyV1IlXHgK4kDfbSuflxzhGPjkiZFKax0qxfbbVq
 
-#### API key 
-```
-BvdkCAQkn4yRegwZ8msnisyRq
-```
+> #### Bearer Token
+> AAAAAAAAAAAAAAAAAAAAAKUZMQEAAAAAUuTOTPXvAmUbPcNgz9qm7OBpU8g%3D72CU0336FikPFKG97uJOOBaQoS2tSEXiJSX03HX4vsOkhZnkhI
 
-#### API Secret key 
-```
-OdaR7XO0g7yMHj91O7NCBhsNN27T16cGQWbyixEXBuxHJ8u9pc
-```
+> #### Access Token
+> 1355610812929466369-kzexRknxTfA7mtHGNsYnAH7oTMXkcF
 
-#### Bearer Token 
-```
-AAAAAAAAAAAAAAAAAAAAAKUZMQEAAAAAN8SRkf4Pd%2Fjffgsvql4pJnu%2BbVs%3DutB9IeRcIYifSWcQWoYvF7L456ZKYJNr94xRC5iTLxXasg9b8U
-```
+> #### Access Token Secret
+> yokDcIK2ezT1UT6knlowreM0pmsZCQQqgexjr8GA5tYsA
+

@@ -1,5 +1,7 @@
 using Core.Configuration;
 using Core.Configuration.Interfaces;
+using Core.Processing;
+using Core.Processing.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,8 +28,9 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHostedService<TweetProcessingService>();
             services.AddControllers();
-            
+
             services
                 .AddSwagger()
                 .AddGzipCompression()

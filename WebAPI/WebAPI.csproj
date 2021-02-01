@@ -11,6 +11,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Core.Configuration\Core.Configuration.csproj" />
+      <ProjectReference Include="..\Core.Processing\Core.Processing.csproj" />
     </ItemGroup>
 
     <ItemGroup>
