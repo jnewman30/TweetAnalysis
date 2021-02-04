@@ -53,6 +53,8 @@ namespace Core.Processing
 
         public void AnalyzeTweets(CancellationToken stoppingToken)
         {
+            // TODO: Do the tweet analysis...
+
             // TweetRepository.Tweets.All(tweet => tweet.)
             using var disposable = TweetRepository.Tweets.Subscribe(tweet =>
             {

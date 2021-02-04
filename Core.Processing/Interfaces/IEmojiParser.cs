@@ -6,6 +6,7 @@ namespace Core.Processing.Interfaces
     public interface IEmojiParser
     {
         void Initialize();
+
         IEnumerable<Emoji> Parse(string text);
     }
 }

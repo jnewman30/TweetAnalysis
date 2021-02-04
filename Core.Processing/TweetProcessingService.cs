@@ -18,6 +18,7 @@ namespace Core.Processing
         private ILogger<TweetProcessingService> Logger { get; }
         private IConfiguration Configuration { get; }
         private ITweetRepository TweetRepository { get; }
+        private IEmojiParser EmojiParser { get; }
 
         private string ApiKey => Configuration.GetValue<string>(
             "TwitterApi:ApiKey", null);
@@ -33,13 +34,13 @@ namespace Core.Processing
         public TweetProcessingService(
             ILogger<TweetProcessingService> logger,
             IConfiguration configuration,
-            ITweetRepository tweetRepository)
+            ITweetRepository tweetRepository,
+            IEmojiParser emojiParser)
         {
             Logger = logger;
             Configuration = configuration;
             TweetRepository = tweetRepository;
-
-            InitializeTweetMapper();
+            EmojiParser = emojiParser;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -47,6 +48,8 @@ namespace Core.Processing
             while (!stoppingToken.IsCancellationRequested)
             {
                 Logger.LogDebug($"Service Event Fired {DateTime.Now:h:mm:ss tt zz}");
+                InitializeTweetMapper();
+                EmojiParser.Initialize();
                 ProcessTweetStream(stoppingToken);
                 await Task.Delay(Timeout.Infinite, stoppingToken);
             }
@@ -76,6 +79,8 @@ namespace Core.Processing
                 sampleStream.TweetReceived += (sender, args) =>
                 {
                     var tweet = TweetMapper.Map<TweetV2, Data.Model.Tweet>(args.Tweet);
+                    tweet.Json = args.Json;
+                    tweet.Emojis = EmojiParser.Parse(tweet.Text);
                     TweetRepository.Add(tweet);
                 };
 

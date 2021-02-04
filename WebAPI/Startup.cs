@@ -32,6 +32,7 @@ namespace WebAPI
         {
             services
                 .AddSingleton<ITweetRepository, TweetRepository>()
+                .AddSingleton<IEmojiParser, EmojiParser>()
                 .AddHostedService<TweetProcessingService>()
                 .AddHostedService<TweetAnalysisService>()
                 .AddControllers();

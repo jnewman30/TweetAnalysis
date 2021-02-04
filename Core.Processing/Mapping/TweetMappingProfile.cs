@@ -41,7 +41,7 @@ namespace Core.Processing.Mapping
             
             MapText(map);
 
-            MapEmojis(map);
+            IgnoreEmojiMapping(map);
 
             MapHashtags(map);
 
@@ -66,6 +66,11 @@ namespace Core.Processing.Mapping
         private static void IgnoreJsonMapping(IMappingExpression<TweetV2, Tweet> map)
         {
             map.ForMember(dest => dest.Json, options => options.Ignore());
+        }
+        
+        private void IgnoreEmojiMapping(IMappingExpression<TweetV2,Tweet> map)
+        {
+            map.ForMember(dest => dest.Emojis, options => options.Ignore());
         }
 
         private static void MapDomains(IMappingExpression<TweetV2, Tweet> map)
@@ -110,12 +115,6 @@ namespace Core.Processing.Mapping
         private static void MapText(IMappingExpression<TweetV2, Tweet> map)
         {
             map.ForMember(dest => dest.Text, options => options
-                .MapFrom(src => src.Text));
-        }
-        
-        private void MapEmojis(IMappingExpression<TweetV2,Tweet> map)
-        {
-            map.ForMember(dest => dest.Emojis, options => options
                 .MapFrom(src => src.Text));
         }
     }
