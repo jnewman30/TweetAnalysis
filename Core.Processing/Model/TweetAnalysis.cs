@@ -4,22 +4,22 @@ namespace Core.Processing.Model
 {
     public record TweetAnalysis
     {
-        public long TotalCount { get; }
+        public long TotalCount { get; init; }
         
-        public long AveragePerHour { get; }
+        public long AveragePerHour { get; init; }
         
-        public long AveragePerMinute { get; }
+        public long AveragePerMinute { get; init; }
         
-        public long AveragePerSecond { get; }
+        public long AveragePerSecond { get; init; }
         
-        public int PercentContainsEmojis { get; }
+        public int PercentContainsEmojis { get; init; }
 
-        public int PercentContainsUrl { get; }
+        public int PercentContainsUrl { get; init; }
         
-        public int PercentContainsPhotoUrl { get; set; }
+        public int PercentContainsPhotoUrl { get; init; }
         
-        public List<string> TopHashTags { get; }
+        public List<string> TopHashTags { get; init; }
         
-        public List<string> TopDomains { get; }
+        public List<string> TopDomains { get; init; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.Data.Model;
 
 namespace Core.Data.Interfaces
 {

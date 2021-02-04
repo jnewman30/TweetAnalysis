@@ -1,5 +1,6 @@
 ﻿using System;
 using Core.Data;
+using Core.Data.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Core.DataTests
@@ -23,6 +24,12 @@ namespace Core.DataTests
             });
             
             repo.Add(expected);            
+        }
+
+        [TestMethod]
+        public void Total_Count_Is_Updated()
+        {
+            Assert.Fail("Not Implemented");
         }
     }
 }

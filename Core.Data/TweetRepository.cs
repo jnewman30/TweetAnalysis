@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using Core.Data.Interfaces;
+using Core.Data.Model;
 
 namespace Core.Data
 {
@@ -24,7 +25,7 @@ namespace Core.Data
 
         public bool Remove()
         {
-            return _tweets.TryDequeue(out var item);
+            return _tweets.TryDequeue(out _);
         }
     }
 }

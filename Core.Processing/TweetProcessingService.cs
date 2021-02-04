@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Core.Data.Interfaces;
 using Core.Processing.Interfaces;
+using Core.Processing.Mapping;
+using Core.Processing.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Tweetinvi;
+using Tweetinvi.Core.Models;
+using Tweetinvi.Models;
+using Tweetinvi.Models.V2;
 
 namespace Core.Processing
 {
@@ -25,6 +32,8 @@ namespace Core.Processing
         private string BearerToken => Configuration.GetValue<string>(
             "TwitterApi:BearerToken", null);
 
+        private Mapper TweetMapper { get; set; }
+
         public TweetProcessingService(
             ILogger<TweetProcessingService> logger,
             IConfiguration configuration,
@@ -33,6 +42,8 @@ namespace Core.Processing
             Logger = logger;
             Configuration = configuration;
             TweetRepository = tweetRepository;
+
+            InitializeTweetMapper();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -68,10 +79,8 @@ namespace Core.Processing
                 var sampleStream = client.StreamsV2.CreateSampleStream();
                 sampleStream.TweetReceived += (sender, args) =>
                 {
-                    TweetRepository.Add(new Data.Tweet
-                    {
-                        Json = args.Json
-                    });
+                    var tweet = TweetMapper.Map<TweetV2, Data.Model.Tweet>(args.Tweet);
+                    TweetRepository.Add(tweet);
                 };
 
                 await sampleStream.StartAsync();
@@ -80,6 +89,12 @@ namespace Core.Processing
             {
                 Logger.LogError(e, "Error downloading tweet stream.");
             }
+        }
+
+        private void InitializeTweetMapper()
+        {
+            var configurationProvider = TweetMappingProfile.Configure();
+            TweetMapper = new Mapper(configurationProvider);
         }
     }
 }

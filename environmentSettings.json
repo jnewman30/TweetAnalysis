@@ -13,5 +13,9 @@
     "ApiSecret": "ASayl2FQM8yyV1IlXHgK4kDfbSuflxzhGPjkiZFKax0qxfbbVq",
     "BearerToken": "AAAAAAAAAAAAAAAAAAAAAKUZMQEAAAAAUuTOTPXvAmUbPcNgz9qm7OBpU8g%3D72CU0336FikPFKG97uJOOBaQoS2tSEXiJSX03HX4vsOkhZnkhI",
     "StreamIntervalSeconds": 10
+  },
+  
+  "EmojiData": {
+    "Url": "https://cdn.jsdelivr.net/npm/emoji-datasource@6.0.0/emoji.json"
   }
 }
