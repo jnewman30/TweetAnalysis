@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Core.Data.Interfaces;
 using Core.Processing.Interfaces;
 using Core.Processing.Mapping;
-using Core.Processing.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Tweetinvi;
-using Tweetinvi.Core.Models;
-using Tweetinvi.Models;
 using Tweetinvi.Models.V2;
 
 namespace Core.Processing

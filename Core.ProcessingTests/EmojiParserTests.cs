@@ -25,8 +25,8 @@ namespace Core.ProcessingTests
             var emojiParser = new EmojiParser(config);
             emojiParser.Initialize();
 
-            Assert.IsNotNull(emojiParser.Emojis);
-            Assert.IsTrue(emojiParser.Count > 0);
+            Assert.IsNotNull(emojiParser.AvailableEmojis);
+            Assert.IsTrue(emojiParser.AvailableEmojis.Count > 0);
         }
 
         [TestMethod]
@@ -42,8 +42,8 @@ namespace Core.ProcessingTests
             var emojiParser = new EmojiParser(config);
             emojiParser.Initialize();
 
-            Assert.IsNotNull(emojiParser.Emojis);
-            Assert.IsTrue(emojiParser.Count > 0);
+            Assert.IsNotNull(emojiParser.AvailableEmojis);
+            Assert.IsTrue(emojiParser.AvailableEmojis.Count > 0);
         }
 
         [TestMethod]

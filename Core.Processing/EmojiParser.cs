@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -15,9 +14,7 @@ namespace Core.Processing
     {
         private IConfiguration Configuration { get; }
         
-        public IDictionary<string, Emoji> Emojis { get; private set; }
-
-        public int Count => Emojis.Count;        
+        public IDictionary<string, Emoji> AvailableEmojis { get; private set; }
 
         public EmojiParser(IConfiguration configuration)
         {
@@ -47,12 +44,12 @@ namespace Core.Processing
             }
             
             var emojiData = JsonConvert.DeserializeObject<IEnumerable<Emoji>>(jsonData);
-            Emojis = emojiData.ToDictionary(item => item.Unified);            
+            AvailableEmojis = emojiData.ToDictionary(item => item.Unified);            
         }
 
         public IEnumerable<Emoji> Parse(string text)
         {
-            return Emojis.Values
+            return AvailableEmojis.Values
                 .Where(emoji => text.Contains(emoji.ToHexSearchString()))
                 .ToArray();
         }
