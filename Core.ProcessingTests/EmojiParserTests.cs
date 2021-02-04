@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Core.Data.Model;
 using Core.Processing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,16 +12,6 @@ namespace Core.ProcessingTests
     [TestClass]
     public class EmojiParserTests
     {
-        [TestMethod]
-        public void Parse_Emoji_Test()
-        {
-            var emojiData = File.ReadAllText("./emoji.json");
-            var timelineData = File.ReadAllText("./sample_timeline.json");
-            
-            var emojiJson = JArray.Parse(emojiData);
-            var timelineJson = JObject.Parse(timelineData)["data"].Children();
-        }
-        
         [TestMethod]
         public void Can_Load_Emojis_From_File()
         {
@@ -69,10 +60,23 @@ namespace Core.ProcessingTests
             emojiParser.Initialize();
 
             var sampleTweetJson = File.ReadAllText("./sample_timeline.json");
-            var sampleTweet = JObject.Parse(sampleTweetJson);
-            var sampleTweetText = sampleTweet["data"]?.Children().First().Value<string>("text");
-            var actualResult = emojiParser.Parse(sampleTweetText);
-            Assert.IsNotNull(actualResult);
+            var sampleTweetObj = JObject.Parse(sampleTweetJson);
+            var sampleTweets = sampleTweetObj["data"]?.Children();
+
+            var actual = new List<IEnumerable<Emoji>>();
+
+            foreach (var sampleTweet in sampleTweets)
+            {
+                var text = sampleTweet.Value<string>("text");
+                var actualResult = emojiParser.Parse(text);
+                Assert.IsNotNull(actualResult);
+                actual.Add(actualResult);
+            }
+
+            Assert.IsTrue(actual.ElementAt(0).Count() == 1);
+            Assert.IsTrue(actual.ElementAt(1).Count() == 1);
+            Assert.IsTrue(actual.ElementAt(2).Count() == 2); // Should be 3 as one appears twice...
+            Assert.IsTrue(actual.ElementAt(3).Count() == 3);
         }
     }
 }

@@ -52,17 +52,9 @@ namespace Core.Processing
 
         public IEnumerable<Emoji> Parse(string text)
         {
-            var results = Emojis.Keys
-                .Where(key =>
-                {
-                    var searchString = string.Join(string.Empty, 
-                        key.Split('-')
-                            .Select(hex => char.ConvertFromUtf32(Convert.ToInt32(hex, 16))));
-                    return text.Contains(searchString);
-                })
-                .Select(key => Emojis[key])
+            return Emojis.Values
+                .Where(emoji => text.Contains(emoji.ToHexSearchString()))
                 .ToArray();
-            return results;
         }
     }
 }

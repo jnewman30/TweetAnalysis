@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Core.Data.Model
@@ -57,5 +59,13 @@ namespace Core.Data.Model
         
         [JsonProperty("has_img_facebook")]
         public bool HasImageFacebook { get; set; }
+
+        public string ToHexSearchString()
+        {
+            return string.Join(string.Empty, 
+                Unified.Split('-')
+                    .Select(hex => char.ConvertFromUtf32(
+                        Convert.ToInt32(hex, 16))));            
+        }
     }
 }
