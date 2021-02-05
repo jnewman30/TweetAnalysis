@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Configuration", "Core.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.ConfigurationTests", "Core.ConfigurationTests\Core.ConfigurationTests.csproj", "{31DD13E4-E226-4412-BD59-3FBFDED8C8C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TweetApiTest", "TweetApiTest\TweetApiTest.csproj", "{E5C14191-F19A-4BCE-BAB2-E14E8E3E334D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Processing", "Core.Processing\Core.Processing.csproj", "{AB9AA148-7B6B-417D-AB8E-82FA072CE6C9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Data", "Core.Data\Core.Data.csproj", "{F695E2A3-CB2C-4E79-A463-90610A4A6A40}"
@@ -40,10 +38,6 @@ Global
 		{31DD13E4-E226-4412-BD59-3FBFDED8C8C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31DD13E4-E226-4412-BD59-3FBFDED8C8C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31DD13E4-E226-4412-BD59-3FBFDED8C8C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E5C14191-F19A-4BCE-BAB2-E14E8E3E334D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E5C14191-F19A-4BCE-BAB2-E14E8E3E334D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E5C14191-F19A-4BCE-BAB2-E14E8E3E334D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E5C14191-F19A-4BCE-BAB2-E14E8E3E334D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB9AA148-7B6B-417D-AB8E-82FA072CE6C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AB9AA148-7B6B-417D-AB8E-82FA072CE6C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB9AA148-7B6B-417D-AB8E-82FA072CE6C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
