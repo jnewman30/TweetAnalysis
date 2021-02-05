@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,6 +21,9 @@ namespace Core.Processing
         private Mapper TweetMapper { get; set; }
 
         private long _currentTweetCount = 0;
+
+        private int AnalysisDelaySeconds => Configuration
+            .GetValue("TwitterApi:AnalysisDelaySeconds", 5);
 
         public TweetAnalysis Analysis { get; private set; }
 
@@ -53,7 +54,9 @@ namespace Core.Processing
             {
                 Logger.LogDebug($"Service Event Fired {DateTime.Now:h:mm:ss tt zz}");
                 AnalyzeTweets(stoppingToken);
-                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+                await Task.Delay(
+                    TimeSpan.FromSeconds(AnalysisDelaySeconds), 
+                    stoppingToken);
             }
         }
 
