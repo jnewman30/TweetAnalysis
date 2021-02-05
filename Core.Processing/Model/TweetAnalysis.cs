@@ -21,6 +21,8 @@ namespace Core.Processing.Model
         
         public decimal PercentContainsPhotoUrl { get; internal set; }
         
+        public IEnumerable<string> TopEmojis { get; internal set; }
+        
         public IEnumerable<string> TopHashTags { get; internal set; }
         
         public IEnumerable<string> TopDomains { get; internal set; }

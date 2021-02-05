@@ -30,7 +30,21 @@ namespace Core.Processing.Model
 
             ComputePercentContainsPhotos(dataToAnalyze, dataToReturn);
 
+            ComputeTopEmojis(dataToAnalyze, dataToReturn);
+            
             return dataToReturn;
+        }
+
+        private void ComputeTopEmojis(
+            IReadOnlyCollection<Tweet> dataToAnalyze, TweetAnalysis dataToReturn)
+        {
+            dataToReturn.TopEmojis = dataToAnalyze
+                .SelectMany(d => d.Emojis)
+                .GroupBy(d => d.ShortName)
+                .OrderByDescending(grp => grp.Count())
+                .Take(10)
+                .Select(grp => grp.Key)
+                .ToArray();            
         }
 
         private void ComputePercentContainsUrl(
@@ -145,9 +159,9 @@ namespace Core.Processing.Model
         }
 
         private static void ComputeTopHashtags(
-            IReadOnlyCollection<Tweet> tweets, TweetAnalysis data)
+            IReadOnlyCollection<Tweet> dataToAnalyze, TweetAnalysis dataToReturn)
         {
-            data.TopHashTags = tweets
+            dataToReturn.TopHashTags = dataToAnalyze
                 .SelectMany(d => d.HashTags)
                 .GroupBy(d => d)
                 .OrderByDescending(grp => grp.Count())
