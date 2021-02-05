@@ -3,19 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Core.Data.Model;
-using Tweetinvi.Models;
 using Tweetinvi.Models.V2;
 
 namespace Core.Processing.Mapping
 {
     public class TweetMappingProfile : Profile
     {
-        public IEnumerable<string> PhotoUrlMatches { get; set; } = new[]
-        {
-            "pic.twitter.com",
-            "instagram"
-        };
-
         public TweetMappingProfile()
         {
             InitializeMappings();
@@ -34,88 +27,59 @@ namespace Core.Processing.Mapping
             var map = CreateMap<TweetV2, Tweet>();
 
             IgnoreJsonMapping(map);
-
-            MapCreatedAt(map);
-
-            MapUrls(map);
-            
-            MapText(map);
-
             IgnoreEmojiMapping(map);
-
+            MapCreatedAt(map);
+            MapUrls(map);
+            MapText(map);
             MapHashtags(map);
-
-            MapContainsUrls(map);
-
             MapPhotos(map);
-
             MapDomains(map);
+            MapContainsUrls(map);
         }
 
         private static void MapUrls(IMappingExpression<TweetV2, Tweet> map)
         {
-            map.ForMember(dest => dest.Urls,
-                options => options.MapFrom(src => src.Entities.Urls));
+            map.ForMember(dest => dest.Urls, m => m.MapFrom<UrlV2Resolver>());
         }
 
         private static void MapCreatedAt(IMappingExpression<TweetV2, Tweet> map)
         {
-            map.ForMember(dest => dest.CreatedAt, options => options.MapFrom(src => src.CreatedAt));
+            map.ForMember(dest => dest.CreatedAt, m => m.MapFrom(src => src.CreatedAt));
         }
 
         private static void IgnoreJsonMapping(IMappingExpression<TweetV2, Tweet> map)
         {
-            map.ForMember(dest => dest.Json, options => options.Ignore());
-        }
-        
-        private void IgnoreEmojiMapping(IMappingExpression<TweetV2,Tweet> map)
-        {
-            map.ForMember(dest => dest.Emojis, options => options.Ignore());
+            map.ForMember(dest => dest.Json, m => m.Ignore());
         }
 
-        private static void MapDomains(IMappingExpression<TweetV2, Tweet> map)
+        private void IgnoreEmojiMapping(IMappingExpression<TweetV2, Tweet> map)
         {
-            map.ForMember(dest => dest.Domains, options =>
-            {
-                options.AllowNull();
-                options.MapFrom(src => src.Entities.Urls
-                    .Select(entity => new Uri(entity.UnwoundUrl, UriKind.Absolute).DnsSafeHost));
-            });
-        }
-
-        private void MapPhotos(IMappingExpression<TweetV2, Tweet> map)
-        {
-            map.ForMember(dest => dest.Photos, options =>
-            {
-                options.AllowNull();
-                options.NullSubstitute(Array.Empty<string>());
-                options.MapFrom(src => src.Entities.Urls
-                    .Where(entity => PhotoUrlMatches
-                        .Any(match => entity.UnwoundUrl
-                            .Contains(match, StringComparison.CurrentCultureIgnoreCase))));
-            });
-        }
-
-        private static void MapContainsUrls(IMappingExpression<TweetV2, Tweet> map)
-        {
-            map.ForMember(dest => dest.ContainsUrls, options =>
-            {
-                options.DoNotAllowNull();
-                options.NullSubstitute(Array.Empty<string>());
-                options.MapFrom(src => src.Entities.Urls.Any());
-            });
+            map.ForMember(dest => dest.Emojis, m => m.Ignore());
         }
 
         private static void MapHashtags(IMappingExpression<TweetV2, Tweet> map)
         {
-            map.ForMember(dest => dest.HashTags, options => options
-                .MapFrom(src => src.Entities.Hashtags.Select(s => s.Tag)));
+            map.ForMember(dest => dest.HashTags, m => m.MapFrom<HashtagV2Resolver>());
         }
 
         private static void MapText(IMappingExpression<TweetV2, Tweet> map)
         {
-            map.ForMember(dest => dest.Text, options => options
-                .MapFrom(src => src.Text));
+            map.ForMember(dest => dest.Text, m => m.MapFrom(src => src.Text));
         }
+
+        private static void MapDomains(IMappingExpression<TweetV2, Tweet> map)
+        {
+            map.ForMember(dest => dest.Domains, m => m.MapFrom<DomainResolver>());
+        }
+        
+        private void MapPhotos(IMappingExpression<TweetV2, Tweet> map)
+        {
+            map.ForMember(dest => dest.Photos, m => m.MapFrom<PhotoUrlResolver>());
+        }
+        
+        private static void MapContainsUrls(IMappingExpression<TweetV2, Tweet> map)
+        {
+            map.ForMember(dest => dest.ContainsUrls, m => m.MapFrom<ContainsUrlsResolver>());
+        }        
     }
 }

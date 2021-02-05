@@ -1,9 +1,8 @@
-using Core.Configuration;
-using Core.Configuration.Interfaces;
 using Core.Data;
 using Core.Data.Interfaces;
 using Core.Processing;
 using Core.Processing.Interfaces;
+using Core.Processing.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +32,8 @@ namespace WebAPI
             services
                 .AddSingleton<ITweetRepository, TweetRepository>()
                 .AddSingleton<IEmojiParser, EmojiParser>()
+                .AddSingleton<ITweetAnalysisStrategy, TweetAnalysisStrategy>()
+                .AddSingleton<ITweetAnalysisService, TweetAnalysisService>()
                 .AddHostedService<TweetProcessingService>()
                 .AddHostedService<TweetAnalysisService>()
                 .AddControllers();

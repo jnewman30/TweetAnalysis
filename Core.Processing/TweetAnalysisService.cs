@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,19 +19,21 @@ namespace Core.Processing
         private ILogger<TweetAnalysisService> Logger { get; }
         private IConfiguration Configuration { get; }
         private ITweetRepository TweetRepository { get; }
-
+        private ITweetAnalysisStrategy TweetAnalysisStrategy { get; }
         private Mapper TweetMapper { get; set; }
 
-        public TweetAnalysis Analysis { get; private set; }
+        public List<TweetAnalysis> Analysis { get; } = new();
 
         public TweetAnalysisService(
             ILogger<TweetAnalysisService> logger,
             IConfiguration configuration,
-            ITweetRepository tweetRepository)
+            ITweetRepository tweetRepository,
+            ITweetAnalysisStrategy tweetAnalysisStrategy)
         {
             Logger = logger;
             Configuration = configuration;
             TweetRepository = tweetRepository;
+            TweetAnalysisStrategy = tweetAnalysisStrategy;
 
             InitializeTweetMapper();
         }
@@ -53,14 +57,8 @@ namespace Core.Processing
 
         public void AnalyzeTweets(CancellationToken stoppingToken)
         {
-            // TODO: Do the tweet analysis...
-
-            // TweetRepository.Tweets.All(tweet => tweet.)
-            using var disposable = TweetRepository.Tweets.Subscribe(tweet =>
-            {
-                var tweetToAnalyze = TweetMapper.Map<TweetAnalysis>(Analysis);
-                // TweetRepository.Remove();
-            });
+            var analysis = TweetAnalysisStrategy.Analyze(TweetRepository.Tweets);
+            Analysis.Add(analysis);
         }
     }
 }

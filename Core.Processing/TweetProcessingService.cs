@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Tweetinvi;
 using Tweetinvi.Models.V2;
+using Tweetinvi.Parameters.V2;
 
 namespace Core.Processing
 {
@@ -48,8 +49,6 @@ namespace Core.Processing
             while (!stoppingToken.IsCancellationRequested)
             {
                 Logger.LogDebug($"Service Event Fired {DateTime.Now:h:mm:ss tt zz}");
-                InitializeTweetMapper();
-                EmojiParser.Initialize();
                 ProcessTweetStream(stoppingToken);
                 await Task.Delay(Timeout.Infinite, stoppingToken);
             }
@@ -65,15 +64,27 @@ namespace Core.Processing
                 string.IsNullOrWhiteSpace(ApiSecret) ||
                 string.IsNullOrWhiteSpace(BearerToken))
             {
-                Logger.LogCritical("One or all of the following are " +
-                                   "missing configuration: ApiKey, BearerToken and ApiUrl.");
-                return;
+                var errorMessage = "One or all of the following are missing configuration: " +
+                                   "ApiKey, BearerToken and ApiUrl.";
+                Logger.LogCritical(errorMessage);
+                throw new Exception(errorMessage);
             }
 
             try
             {
+                // Use this if passed through... <= 0 is no limit (Great for testing)
+                var maxTweetCount = Configuration.GetValue(
+                    "TwitterApi:MaxTweetCount", -1);
+
+                InitializeTweetMapper();
+                EmojiParser.Initialize();
+                
                 var client = new TwitterClient(ApiKey, ApiSecret, BearerToken);
-                client.Config.TweetMode = TweetMode.Compat;
+                client.Config.TweetMode = TweetMode.Extended;
+                if (maxTweetCount > 0)
+                {
+                    client.Config.Limits.MESSAGES_GET_MAX_PAGE_SIZE = 10;
+                }
 
                 var sampleStream = client.StreamsV2.CreateSampleStream();
                 sampleStream.TweetReceived += (sender, args) =>
@@ -89,6 +100,7 @@ namespace Core.Processing
             catch (Exception e)
             {
                 Logger.LogError(e, "Error downloading tweet stream.");
+                throw;
             }
         }
 

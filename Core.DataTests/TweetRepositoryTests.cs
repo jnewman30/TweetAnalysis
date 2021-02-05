@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Core.Data;
 using Core.Data.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,19 +18,10 @@ namespace Core.DataTests
             };
             
             var repo = new TweetRepository();
+            repo.Add(expected);
 
-            repo.Tweets.Subscribe(actual =>
-            {
-                Assert.AreEqual(expected.Json, actual.Json);
-            });
-            
-            repo.Add(expected);            
-        }
-
-        [TestMethod]
-        public void Total_Count_Is_Updated()
-        {
-            Assert.Fail("Not Implemented");
+            Assert.IsTrue(repo.Tweets.Count() == 1);
+            Assert.AreEqual(expected.Json, repo.Tweets.FirstOrDefault()?.Json);
         }
     }
 }

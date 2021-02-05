@@ -1,12 +1,14 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Core.Data.Model;
 
 namespace Core.Data.Interfaces
 {
     public interface ITweetRepository
     {
-        IObservable<Tweet> Tweets { get; }
+        IEnumerable<Tweet> Tweets { get; }
+        
         void Add(Tweet item);
-        bool Remove();
+        
+        bool Remove(Tweet item);
     }
 }

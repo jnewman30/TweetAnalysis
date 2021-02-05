@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using Core.Data.Interfaces;
 using Core.Data.Model;
@@ -9,23 +10,18 @@ namespace Core.Data
 {
     public class TweetRepository : ITweetRepository
     {
-        private readonly ConcurrentQueue<Tweet> _tweets = new();
+        private readonly List<Tweet> _tweetData = new();
 
-        public IObservable<Tweet> Tweets { get; }
-
-        public TweetRepository()
-        {
-            Tweets = _tweets.ToObservable();
-        }
+        public IEnumerable<Tweet> Tweets => _tweetData;
 
         public void Add(Tweet item)
         {
-            _tweets.Enqueue(item);
+            _tweetData.Add(item);
         }
 
-        public bool Remove()
+        public bool Remove(Tweet item)
         {
-            return _tweets.TryDequeue(out _);
+            return _tweetData.Remove(item);
         }
     }
 }
