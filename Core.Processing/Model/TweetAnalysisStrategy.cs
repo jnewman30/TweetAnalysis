@@ -40,7 +40,7 @@ namespace Core.Processing.Model
                 .Count(tweet => tweet.ContainsUrls);
 
             dataToReturn.PercentContainsUrl =
-                urlCount / (decimal) dataToAnalyze.Count * 100m;
+                decimal.Round(urlCount / (decimal) dataToAnalyze.Count * 100m, 2);
         }
 
         private void ComputePercentContainsEmojis(
@@ -50,7 +50,7 @@ namespace Core.Processing.Model
                 .Count(tweet => tweet.Emojis.Any());
 
             dataToReturn.PercentContainsEmojis =
-                emojiCount / (decimal) dataToAnalyze.Count * 100m;
+                decimal.Round(emojiCount / (decimal) dataToAnalyze.Count * 100m, 2);
         }
 
         private void ComputePercentContainsPhotos(
@@ -60,7 +60,7 @@ namespace Core.Processing.Model
                 .Count(tweet => tweet.Photos.Any());
 
             dataToReturn.PercentContainsPhotoUrl =
-                photoCount / (decimal) dataToAnalyze.Count * 100m;
+                decimal.Round(photoCount / (decimal) dataToAnalyze.Count * 100m, 2);
         }
 
         private void ComputeAveragePerHour(
