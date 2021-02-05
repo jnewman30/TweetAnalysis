@@ -39,13 +39,13 @@ namespace Core.ProcessingTests
                 .AddSingleton<IEmojiParser, EmojiParser>()
                 .AddSingleton<ITweetRepository, TweetRepository>()
                 .AddSingleton<ITweetAnalysisStrategy, TweetAnalysisStrategy>()
-                .AddSingleton<ITweetProcessingService, TweetProcessingService>()
+                .AddSingleton<TweetProcessingService>()
                 .BuildServiceProvider();
 
             var repo = services.GetService<ITweetRepository>();
             Assert.IsNotNull(repo);
 
-            var processingService = services.GetService<ITweetProcessingService>();
+            var processingService = services.GetService<TweetProcessingService>();
             Assert.IsNotNull(processingService);
 
             var cancellationToken = new CancellationToken();

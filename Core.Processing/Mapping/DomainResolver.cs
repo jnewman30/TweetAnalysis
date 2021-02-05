@@ -19,9 +19,9 @@ namespace Core.Processing.Mapping
             return source.Entities.Urls
                 .Select(entity =>
                 {
-                    var urlToUse = entity?.UnwoundUrl ??
-                                   entity?.ExpandedUrl ??
-                                   entity?.Url;
+                    var urlToUse = entity?.ExpandedUrl ??
+                                   entity?.Url ??
+                                   entity?.DisplayUrl;
                     return urlToUse == null 
                         ? string.Empty 
                         : new Uri(urlToUse, UriKind.Absolute).DnsSafeHost;

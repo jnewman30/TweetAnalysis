@@ -10,11 +10,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Tweetinvi;
 using Tweetinvi.Models.V2;
-using Tweetinvi.Parameters.V2;
 
 namespace Core.Processing
 {
-    public class TweetProcessingService : BackgroundService, ITweetProcessingService
+    public class TweetProcessingService : BackgroundService
     {
         private ILogger<TweetProcessingService> Logger { get; }
         private IConfiguration Configuration { get; }
@@ -73,7 +72,7 @@ namespace Core.Processing
             try
             {
                 // Use this if passed through... <= 0 is no limit (Great for testing)
-                var maxTweetCount = Configuration.GetValue(
+                var maxTweetCount = Configuration.GetValue<short>(
                     "TwitterApi:MaxTweetCount", -1);
 
                 InitializeTweetMapper();
@@ -83,7 +82,7 @@ namespace Core.Processing
                 client.Config.TweetMode = TweetMode.Extended;
                 if (maxTweetCount > 0)
                 {
-                    client.Config.Limits.MESSAGES_GET_MAX_PAGE_SIZE = 10;
+                    client.Config.Limits.MESSAGES_GET_MAX_PAGE_SIZE = maxTweetCount;
                 }
 
                 var sampleStream = client.StreamsV2.CreateSampleStream();

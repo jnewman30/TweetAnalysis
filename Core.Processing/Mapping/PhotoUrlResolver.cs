@@ -27,9 +27,9 @@ namespace Core.Processing.Mapping
                 .Where(entity => PhotoUrlMatches
                     .Any(match =>
                     {
-                        var matchString = entity?.DisplayUrl ?? 
-                                          entity?.ExpandedUrl ?? 
-                                          entity?.Url;
+                        var matchString = entity?.ExpandedUrl ?? 
+                                          entity?.Url ??
+                                          entity?.DisplayUrl;
                         return matchString != null && 
                                matchString.Contains(match, 
                                    StringComparison.CurrentCultureIgnoreCase);

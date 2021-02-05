@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebAPI.Helpers;
 using WebAPI.Hubs;
 using WebAPI.ServiceExtensions;
 
@@ -17,7 +18,7 @@ namespace WebAPI
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = Configuration;
+            Configuration = configuration;
         }
 
         private IConfiguration Configuration { get; }
@@ -31,9 +32,10 @@ namespace WebAPI
         {
             services
                 .AddSingleton<ITweetRepository, TweetRepository>()
-                .AddSingleton<IEmojiParser, EmojiParser>()
-                .AddSingleton<ITweetAnalysisStrategy, TweetAnalysisStrategy>()
-                .AddSingleton<ITweetAnalysisService, TweetAnalysisService>()
+                .AddTransient<IEmojiParser, EmojiParser>()
+                .AddTransient<ITweetAnalysisStrategy, TweetAnalysisStrategy>()
+                .AddTransient<IHostedServiceAccessor<TweetAnalysisService>, HostedServiceAccessor<TweetAnalysisService>>()
+                .AddTransient<IHostedServiceAccessor<TweetProcessingService>, HostedServiceAccessor<TweetProcessingService>>()
                 .AddHostedService<TweetProcessingService>()
                 .AddHostedService<TweetAnalysisService>()
                 .AddControllers();

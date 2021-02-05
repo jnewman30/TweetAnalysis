@@ -1,7 +1,11 @@
-﻿using AutoMapper.Configuration;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Core.Processing;
 using Core.Processing.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using WebAPI.Helpers;
 
 namespace WebAPI.Controllers
 {
@@ -11,22 +15,23 @@ namespace WebAPI.Controllers
     {
         private ILogger<TweetController> Logger { get; }
         private IConfiguration Configuration { get; }
-        private ITweetAnalysisService TweetAnalysisService { get; }
+        private TweetAnalysisService TweetAnalysisService { get; }
 
         public TweetController(
             ILogger<TweetController> logger,
             IConfiguration configuration,
-            ITweetAnalysisService tweetAnalysisService)
+            IHostedServiceAccessor<TweetAnalysisService> accessor)
         {
             Logger = logger;
             Configuration = configuration;
-            TweetAnalysisService = tweetAnalysisService;
+            TweetAnalysisService = accessor.Service;
         }
         
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok();
+            var data = TweetAnalysisService.Analysis;
+            return Ok(data);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Core.Processing
 {
-    public class TweetAnalysisService : BackgroundService, ITweetAnalysisService
+    public class TweetAnalysisService : BackgroundService
     {
         private ILogger<TweetAnalysisService> Logger { get; }
         private IConfiguration Configuration { get; }
@@ -22,7 +22,9 @@ namespace Core.Processing
         private ITweetAnalysisStrategy TweetAnalysisStrategy { get; }
         private Mapper TweetMapper { get; set; }
 
-        public List<TweetAnalysis> Analysis { get; } = new();
+        private long _currentTweetCount = 0;
+
+        public TweetAnalysis Analysis { get; private set; }
 
         public TweetAnalysisService(
             ILogger<TweetAnalysisService> logger,
@@ -51,14 +53,33 @@ namespace Core.Processing
             {
                 Logger.LogDebug($"Service Event Fired {DateTime.Now:h:mm:ss tt zz}");
                 AnalyzeTweets(stoppingToken);
-                await Task.Delay(Timeout.Infinite, stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
             }
         }
 
         public void AnalyzeTweets(CancellationToken stoppingToken)
         {
-            var analysis = TweetAnalysisStrategy.Analyze(TweetRepository.Tweets);
-            Analysis.Add(analysis);
+            try
+            {
+                if (!TweetRepository.Tweets.Any())
+                {
+                    return;
+                }
+
+                var tweetCount = TweetRepository.Tweets.Count();
+                if (tweetCount == _currentTweetCount)
+                {
+                    return;
+                }
+
+                Analysis = TweetAnalysisStrategy.Analyze(TweetRepository.Tweets);
+
+                _currentTweetCount = tweetCount;
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, "Error analyzing tweets");
+            }
         }
     }
 }

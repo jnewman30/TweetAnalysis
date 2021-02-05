@@ -13,8 +13,7 @@ namespace Core.Processing.Mapping
             IEnumerable<string> destMember, ResolutionContext context)
         {
             return source.Entities?.Urls?
-                .Select(url => url?.DisplayUrl ??
-                               url?.ExpandedUrl ??
+                .Select(url => url?.ExpandedUrl ??
                                url?.Url).ToArray() ?? 
                    Array.Empty<string>();
         }

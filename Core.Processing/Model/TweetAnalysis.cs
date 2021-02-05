@@ -1,25 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Core.Processing.Model
 {
-    public record TweetAnalysis
+    public class TweetAnalysis
     {
-        public long TotalCount { get; init; }
-        
-        public long AveragePerHour { get; init; }
-        
-        public long AveragePerMinute { get; init; }
-        
-        public long AveragePerSecond { get; init; }
-        
-        public int PercentContainsEmojis { get; init; }
+        public DateTime DateCreated { get; set; } = DateTime.Now;
 
-        public int PercentContainsUrl { get; init; }
+        public long TotalCount { get; internal set; }
+
+        public double AveragePerHour { get; internal set; }
         
-        public int PercentContainsPhotoUrl { get; init; }
+        public double AveragePerMinute { get; internal set; }
         
-        public List<string> TopHashTags { get; init; }
+        public double AveragePerSecond { get; internal set; }
         
-        public List<string> TopDomains { get; init; }
+        public decimal PercentContainsEmojis { get; internal set; }
+
+        public decimal PercentContainsUrl { get; internal set; }
+        
+        public decimal PercentContainsPhotoUrl { get; internal set; }
+        
+        public IEnumerable<string> TopHashTags { get; internal set; }
+        
+        public IEnumerable<string> TopDomains { get; internal set; }
     }
 }
